@@ -6,7 +6,7 @@ export interface Blog {
   likes: number;
 }
 
-export const blogs: Blog[] = [
+export const Hardblogs: Blog[] = [
   {
     id: 1,
     title: "Understanding JavaScript Closures",
