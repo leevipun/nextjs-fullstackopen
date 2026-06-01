@@ -19,6 +19,12 @@ export default function NavigationBar() {
           >
             Blogs
           </Link>
+          <Link
+            href="/users"
+            className="rounded-full px-3 py-1 text-zinc-800 transition-colors hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            Users
+          </Link>
         </li>
         <li>
           <Link
