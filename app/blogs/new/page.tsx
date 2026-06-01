@@ -1,29 +1,11 @@
-"use client";
-
-import { Blog, Hardblogs } from "@/app/assets/data";
-import { addNewBlog } from "@/app/services/blogs";
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import { createBlogAction } from "@/app/actions/blogs";
 
 export default function NewBlog() {
-  const [title, setTitle] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
-
-  const handleSubmit = () => {
-    const newBlog: Blog = {
-      id: Hardblogs.length + 1,
-      title: title,
-      author: author,
-      url: url,
-      likes: 0,
-    };
-    addNewBlog(newBlog);
-    redirect("/blogs");
-  };
-
   return (
-    <form action={handleSubmit} className="mx-auto w-full max-w-xl px-6 py-10">
+    <form
+      action={createBlogAction}
+      className="mx-auto w-full max-w-xl px-6 py-10"
+    >
       <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
           New blog
@@ -41,8 +23,8 @@ export default function NewBlog() {
               id="title"
               type="text"
               placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              name="title"
+              required
               className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
@@ -54,8 +36,8 @@ export default function NewBlog() {
               id="author"
               type="text"
               placeholder="Author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
+              name="author"
+              required
               className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>
@@ -67,8 +49,8 @@ export default function NewBlog() {
               id="url"
               type="text"
               placeholder="Url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              name="url"
+              required
               className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
             />
           </div>

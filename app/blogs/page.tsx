@@ -1,5 +1,5 @@
-import { Blog, Hardblogs } from "../assets/data";
 import Link from "next/link";
+import { getBlogs } from "../services/blogs";
 
 type BlogSearchParams = {
   filter?: string | string[];
@@ -15,10 +15,7 @@ export default async function Blogs({
     typeof resolvedSearchParams?.filter === "string"
       ? resolvedSearchParams.filter
       : "";
-  const normalizedFilter = filter.trim().toLowerCase();
-  const blogs: Blog[] = [...Hardblogs]
-    .sort((a, b) => b.likes - a.likes)
-    .filter((blog) => blog.title.toLowerCase().includes(normalizedFilter));
+  const blogs = await getBlogs(filter);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-10">

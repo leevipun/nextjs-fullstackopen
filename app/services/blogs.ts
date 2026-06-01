@@ -1,19 +1,65 @@
-import { Blog, Hardblogs } from "../assets/data";
+import { db } from "@/db";
+import { blogs as blogsTable } from "@/db/schema";
+import { desc, eq, ilike, sql } from "drizzle-orm";
+import { Blog } from "../assets/data";
 
-export function getBlogById(id: number) {
-  const blog = Hardblogs.find((blog) => blog.id == id);
-  return blog;
+type NewBlog = Omit<Blog, "id">;
+
+function mapBlog(row: typeof blogsTable.$inferSelect): Blog {
+  return {
+    id: row.id,
+    title: row.title,
+    author: row.author,
+    url: row.url,
+    likes: row.likes ? Number(row.likes) : 0,
+    user_id: row.userId,
+  };
 }
 
-export function addNewBlog(blog: Blog) {
-  Hardblogs.push(blog);
+export async function getBlogs(filter?: string) {
+  const normalizedFilter = filter?.trim();
+  const rows = normalizedFilter
+    ? await db
+        .select()
+        .from(blogsTable)
+        .where(ilike(blogsTable.title, `%${normalizedFilter}%`))
+        .orderBy(desc(blogsTable.likes))
+    : await db.select().from(blogsTable).orderBy(desc(blogsTable.likes));
+  return rows.map(mapBlog);
 }
 
-export function likeBlog(id: number) {
-  const blog = Hardblogs.find((blog) => blog.id === id);
-  if (!blog) {
-    return false;
-  }
-  blog.likes = (blog.likes ?? 0) + 1;
-  return blog;
+export async function getBlogById(id: number) {
+  const rows = await db
+    .select()
+    .from(blogsTable)
+    .where(eq(blogsTable.id, id))
+    .limit(1);
+
+  return rows[0] ? mapBlog(rows[0]) : null;
+}
+
+export async function addNewBlog(blog: NewBlog) {
+  const [inserted] = await db
+    .insert(blogsTable)
+    .values({
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes != null ? String(blog.likes) : "0",
+    })
+    .returning();
+
+  return inserted ? mapBlog(inserted) : null;
+}
+
+export async function likeBlog(id: number) {
+  const [updated] = await db
+    .update(blogsTable)
+    .set({
+      likes: sql`${blogsTable.likes} + 1`,
+    })
+    .where(eq(blogsTable.id, id))
+    .returning();
+
+  return updated ? mapBlog(updated) : null;
 }
