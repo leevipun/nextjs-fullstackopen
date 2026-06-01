@@ -3,8 +3,8 @@ export interface Blog {
   title: string;
   author: string;
   url: string;
-  likes: number;
-  user_id: number | null;
+  likes: string | null;
+  userId: number | null;
 }
 
 export interface User {

@@ -11,8 +11,8 @@ function mapBlog(row: typeof blogsTable.$inferSelect): Blog {
     title: row.title,
     author: row.author,
     url: row.url,
-    likes: row.likes ? Number(row.likes) : 0,
-    user_id: row.userId,
+    likes: String(row.likes) ? String(row.likes) : "0",
+    userId: row.userId,
   };
 }
 

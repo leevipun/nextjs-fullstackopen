@@ -33,8 +33,8 @@ export async function createBlogAction(formData: FormData) {
     title,
     author,
     url,
-    likes: 0,
-    user_id: 1,
+    likes: "0",
+    userId: 1,
   });
 
   revalidatePath("/blogs");

@@ -1,8 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f4f1;
+  --foreground: #161616;
+  --page-bg:
+    radial-gradient(
+      1200px 700px at 12% -10%,
+      #ffe6d8 0%,
+      rgba(255, 230, 216, 0) 60%
+    ),
+    radial-gradient(
+      900px 600px at 100% 10%,
+      #dce8ff 0%,
+      rgba(220, 232, 255, 0) 55%
+    ),
+    #f6f4f1;
+  --card-bg: #ffffff;
+  --card-border: #ece7e2;
+  --muted: #5f5b57;
+  --accent: #ef5a3c;
+  --accent-2: #2f62c9;
+  --shadow: 0 20px 50px -35px rgba(19, 17, 16, 0.45);
+  --font-body: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  --font-display: "Fraunces", "Space Grotesk", serif;
 }
 
 @theme inline {
@@ -14,13 +35,39 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0c0c0b;
+    --foreground: #f2f0ec;
+    --page-bg:
+      radial-gradient(
+        1000px 500px at 15% -10%,
+        rgba(255, 122, 85, 0.2) 0%,
+        rgba(0, 0, 0, 0) 60%
+      ),
+      radial-gradient(
+        900px 600px at 95% 0%,
+        rgba(91, 140, 255, 0.2) 0%,
+        rgba(0, 0, 0, 0) 55%
+      ),
+      #0c0c0b;
+    --card-bg: #121211;
+    --card-border: #262422;
+    --muted: #b6ada5;
+    --accent: #ff7f63;
+    --accent-2: #6ea0ff;
+    --shadow: 0 20px 60px -40px rgba(0, 0, 0, 0.7);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+}
+
+.page-shell {
+  background: var(--page-bg);
+}
+
+.font-display {
+  font-family: var(--font-display);
 }

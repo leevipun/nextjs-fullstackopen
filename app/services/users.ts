@@ -14,3 +14,14 @@ export async function getUsers() {
   const rows = await db.select().from(usersTable);
   return rows.map(mapUser);
 }
+
+export async function getUserByUsername(username: string) {
+  const user = await db.query.users.findFirst({
+    where: (users, { eq }) => eq(users.username, username),
+    with: {
+      blogs: true,
+    },
+  });
+
+  return user;
+}
