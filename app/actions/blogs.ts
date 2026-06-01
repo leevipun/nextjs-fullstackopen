@@ -34,6 +34,7 @@ export async function createBlogAction(formData: FormData) {
     author,
     url,
     likes: 0,
+    user_id: 1,
   });
 
   revalidatePath("/blogs");
