@@ -46,6 +46,7 @@ export async function addNewBlog(blog: NewBlog) {
       author: blog.author,
       url: blog.url,
       likes: blog.likes != null ? String(blog.likes) : "0",
+      userId: blog.userId ?? null,
     })
     .returning();
 

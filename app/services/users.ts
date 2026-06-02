@@ -25,3 +25,22 @@ export async function getUserByUsername(username: string) {
 
   return user;
 }
+
+type NewUser = {
+  username: string;
+  name: string;
+  passwordHash: string;
+};
+
+export async function createUser(user: NewUser) {
+  const [created] = await db
+    .insert(usersTable)
+    .values({
+      username: user.username,
+      name: user.name,
+      passwordHash: user.passwordHash,
+    })
+    .returning();
+
+  return created ? mapUser(created) : null;
+}
