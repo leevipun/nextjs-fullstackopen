@@ -1,10 +1,12 @@
+"use client";
+
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { logoutAction } from "@/app/actions/auth";
+import { useSession } from "next-auth/react";
 
-export default async function NavigationBar() {
-  const session = await auth();
+export default function NavigationBar() {
+  const { data: session } = useSession();
   const user = session?.user;
 
   return (
@@ -46,9 +48,12 @@ export default async function NavigationBar() {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-zinc-600 dark:text-zinc-300">
-                {user.name ?? user.username}
-              </span>
+              <Link
+                href="/me"
+                className="rounded-full px-3 py-1 text-zinc-700 transition-colors hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900"
+              >
+                Profile
+              </Link>
               <form action={logoutAction}>
                 <button
                   type="submit"

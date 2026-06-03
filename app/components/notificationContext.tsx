@@ -1,0 +1,47 @@
+"use client";
+
+import { createContext, useContext, useState } from "react";
+
+type NotificationType = "success" | "error";
+
+type NotificationContextType = {
+  message: string;
+  type: NotificationType;
+  showNotification: (message: string, type?: NotificationType) => void;
+  dismissNotification: () => void;
+};
+
+const NotificationContext = createContext<NotificationContextType>({
+  message: "",
+  type: "success",
+  showNotification: () => {},
+  dismissNotification: () => {},
+});
+
+export const NotificationProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState<NotificationType>("success");
+
+  const showNotification = (
+    msg: string,
+    notifType: NotificationType = "success",
+  ) => {
+    setMessage(msg);
+    setType(notifType);
+    setTimeout(() => setMessage(""), 5000);
+  };
+
+  const dismissNotification = () => setMessage("");
+
+  return (
+    <NotificationContext value={{ message, type, showNotification, dismissNotification }}>
+      {children}
+    </NotificationContext>
+  );
+};
+
+export const useNotification = () => useContext(NotificationContext);

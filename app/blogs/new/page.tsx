@@ -1,68 +1,88 @@
+"use client";
+
+import { useActionState, useEffect, useState } from "react";
 import { createBlogAction } from "@/app/actions/blogs";
 
 export default function NewBlog() {
+  const [state, formAction] = useActionState(createBlogAction, {
+    errors: undefined,
+    message: undefined,
+    fields: undefined,
+  });
+
+  const [fields, setFields] = useState({ title: "", author: "", url: "" });
+
+  useEffect(() => {
+    if (state?.fields) {
+      setFields(state.fields);
+    }
+  }, [state]);
+
   return (
-    <form
-      action={createBlogAction}
-      className="mx-auto w-full max-w-xl px-6 py-10"
-    >
+    <form action={formAction} className="mx-auto w-full max-w-xl px-6 py-10">
       <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          New blog
-        </h1>
+        <h1 className="text-2xl font-semibold">New blog</h1>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Share something worth reading.
         </p>
 
         <div className="mt-6 grid gap-4">
           <div className="grid gap-2">
-            <label htmlFor="title" className="text-sm font-medium">
-              Title
-            </label>
+            <label>Title</label>
             <input
-              id="title"
-              type="text"
-              placeholder="Title"
               name="title"
-              required
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+              className="input"
+              value={fields.title}
+              onChange={(e) =>
+                setFields((f) => ({ ...f, title: e.target.value }))
+              }
             />
+            {state?.errors?.title && (
+              <p className="text-sm text-red-500">{state.errors.title[0]}</p>
+            )}
           </div>
+
           <div className="grid gap-2">
-            <label htmlFor="author" className="text-sm font-medium">
-              Author
-            </label>
+            <label>Author</label>
             <input
-              id="author"
-              type="text"
-              placeholder="Author"
               name="author"
-              required
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+              className="input"
+              value={fields.author}
+              onChange={(e) =>
+                setFields((f) => ({ ...f, author: e.target.value }))
+              }
             />
+            {state?.errors?.author && (
+              <p className="text-sm text-red-500">{state.errors.author[0]}</p>
+            )}
           </div>
+
           <div className="grid gap-2">
-            <label htmlFor="url" className="text-sm font-medium">
-              Url
-            </label>
+            <label>URL</label>
             <input
-              id="url"
-              type="text"
-              placeholder="Url"
               name="url"
-              required
-              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none ring-0 transition focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+              className="input"
+              value={fields.url}
+              onChange={(e) =>
+                setFields((f) => ({ ...f, url: e.target.value }))
+              }
             />
+            {state?.errors?.url && (
+              <p className="text-sm text-red-500">{state.errors.url[0]}</p>
+            )}
           </div>
         </div>
-        <div className="mt-6 flex items-center gap-3">
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center rounded-full bg-zinc-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
-          >
-            Submit
-          </button>
-        </div>
+
+        {state?.message && (
+          <p className="mt-4 text-sm text-red-500">{state.message}</p>
+        )}
+
+        <button
+          type="submit"
+          className="mt-6 rounded-full bg-black px-4 py-2 text-white"
+        >
+          Submit
+        </button>
       </div>
     </form>
   );

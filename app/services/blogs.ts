@@ -1,7 +1,16 @@
 import { db } from "@/db";
-import { blogs as blogsTable } from "@/db/schema";
-import { desc, eq, ilike, sql } from "drizzle-orm";
+import {
+  blogs as blogsTable,
+  readingList as readingListTable,
+} from "@/db/schema";
+import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { Blog } from "../assets/data";
+
+export type ReadingListItem = {
+  id: number;
+  read: boolean;
+  blog: Blog;
+};
 
 type NewBlog = Omit<Blog, "id">;
 
@@ -63,4 +72,65 @@ export async function likeBlog(id: number) {
     .returning();
 
   return updated ? mapBlog(updated) : null;
+}
+
+export async function addToReadingList(userId: number, blogId: number) {
+  const [inserted] = await db
+    .insert(readingListTable)
+    .values({ userId, blogId })
+    .returning();
+  return inserted ?? null;
+}
+
+export async function isInReadingList(
+  userId: number,
+  blogId: number,
+): Promise<boolean> {
+  const rows = await db
+    .select()
+    .from(readingListTable)
+    .where(
+      and(
+        eq(readingListTable.userId, userId),
+        eq(readingListTable.blogId, blogId),
+      ),
+    )
+    .limit(1);
+  return rows.length > 0;
+}
+
+export async function getReadingList(
+  userId: number,
+): Promise<ReadingListItem[]> {
+  const rows = await db
+    .select({
+      id: readingListTable.id,
+      read: readingListTable.read,
+      blog: blogsTable,
+    })
+    .from(readingListTable)
+    .innerJoin(blogsTable, eq(readingListTable.blogId, blogsTable.id))
+    .where(eq(readingListTable.userId, userId));
+
+  return rows.map((row) => ({
+    id: row.id,
+    read: row.read,
+    blog: {
+      id: row.blog.id,
+      title: row.blog.title,
+      author: row.blog.author,
+      url: row.blog.url,
+      likes: String(row.blog.likes) ? String(row.blog.likes) : "0",
+      userId: row.blog.userId,
+    },
+  }));
+}
+
+export async function markAsRead(readingListId: number) {
+  const [updated] = await db
+    .update(readingListTable)
+    .set({ read: true })
+    .where(eq(readingListTable.id, readingListId))
+    .returning();
+  return updated ?? null;
 }
