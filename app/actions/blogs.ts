@@ -20,6 +20,7 @@ type State = {
     author: string;
     url: string;
   };
+  success?: boolean;
 };
 
 export async function likeBlogAction(formData: FormData) {
@@ -93,14 +94,14 @@ export async function createBlogAction(
     }
 
     revalidatePath("/blogs");
+
+    return { success: true, fields: rawData };
   } catch {
     return {
       message: "Failed to create blog",
       fields: rawData,
     };
   }
-
-  redirect("/blogs");
 }
 
 export async function addToReadingListAction(formData: FormData) {

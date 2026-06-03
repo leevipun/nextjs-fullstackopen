@@ -27,13 +27,14 @@ export default async function Blogs({
             name="filter"
             type="text"
             placeholder="Search"
+            data-testid="filter-input"
             className="border rounded-lg p-2 m-2"
           />
-          <button type="submit">Search</button>
+          <button type="submit" data-testid="search-button">Search</button>
         </form>
         <p className="text-sm text-zinc-500">Sorted by likes</p>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div data-testid="blogs-list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {blogs?.map((blog) => (
           <Link
             href={`/blogs/${blog.id}`}

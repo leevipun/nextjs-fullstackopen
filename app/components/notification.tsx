@@ -10,6 +10,7 @@ export default function Notification() {
   return (
     <div className="fixed inset-x-0 top-0 z-50 flex justify-center pointer-events-none">
       <div
+        data-testid="notification"
         className={`mt-4 flex items-center gap-3 rounded-lg px-5 py-3 shadow-lg pointer-events-auto text-sm font-medium text-white ${
           type === "success" ? "bg-green-600" : "bg-red-600"
         }`}

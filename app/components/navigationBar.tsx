@@ -18,7 +18,7 @@ export default function NavigationBar() {
               href="/"
               className="rounded-full px-3 py-1 text-zinc-800 transition-colors hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-900"
             >
-              Home
+              home
             </Link>
           </li>
           <li className="flex items-center gap-4">
@@ -26,13 +26,13 @@ export default function NavigationBar() {
               href="/blogs"
               className="rounded-full px-3 py-1 text-zinc-800 transition-colors hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-900"
             >
-              Blogs
+              blogs
             </Link>
             <Link
               href="/users"
               className="rounded-full px-3 py-1 text-zinc-800 transition-colors hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-900"
             >
-              Users
+              users
             </Link>
           </li>
           <li>
@@ -52,14 +52,14 @@ export default function NavigationBar() {
                 href="/me"
                 className="rounded-full px-3 py-1 text-zinc-700 transition-colors hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900"
               >
-                Profile
+                me
               </Link>
               <form action={logoutAction}>
                 <button
                   type="submit"
                   className="rounded-full border border-zinc-200 px-3 py-1 text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-900"
                 >
-                  Sign out
+                  logout
                 </button>
               </form>
             </>
@@ -69,13 +69,13 @@ export default function NavigationBar() {
                 href="/login"
                 className="rounded-full px-3 py-1 text-zinc-700 transition-colors hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-900"
               >
-                Sign in
+                login
               </Link>
               <Link
                 href="/register"
                 className="rounded-full border border-zinc-200 px-3 py-1 text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-900"
               >
-                Register
+                register
               </Link>
             </>
           )}

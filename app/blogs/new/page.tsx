@@ -1,22 +1,29 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createBlogAction } from "@/app/actions/blogs";
+import { useNotification } from "@/app/components/notificationContext";
 
 export default function NewBlog() {
+  const router = useRouter();
   const [state, formAction] = useActionState(createBlogAction, {
     errors: undefined,
     message: undefined,
     fields: undefined,
   });
+  const { showNotification } = useNotification();
 
   const [fields, setFields] = useState({ title: "", author: "", url: "" });
 
   useEffect(() => {
-    if (state?.fields) {
+    if (state?.success) {
+      showNotification("Blog created successfully");
+      router.push("/blogs");
+    } else if (state?.fields) {
       setFields(state.fields);
     }
-  }, [state]);
+  }, [state, showNotification, router]);
 
   return (
     <form action={formAction} className="mx-auto w-full max-w-xl px-6 py-10">
@@ -28,45 +35,51 @@ export default function NewBlog() {
 
         <div className="mt-6 grid gap-4">
           <div className="grid gap-2">
-            <label>Title</label>
-            <input
-              name="title"
-              className="input"
-              value={fields.title}
-              onChange={(e) =>
-                setFields((f) => ({ ...f, title: e.target.value }))
-              }
-            />
+            <label>
+              Title
+              <input
+                name="title"
+                className="input"
+                value={fields.title}
+                onChange={(e) =>
+                  setFields((f) => ({ ...f, title: e.target.value }))
+                }
+              />
+            </label>
             {state?.errors?.title && (
               <p className="text-sm text-red-500">{state.errors.title[0]}</p>
             )}
           </div>
 
           <div className="grid gap-2">
-            <label>Author</label>
-            <input
-              name="author"
-              className="input"
-              value={fields.author}
-              onChange={(e) =>
-                setFields((f) => ({ ...f, author: e.target.value }))
-              }
-            />
+            <label>
+              Author
+              <input
+                name="author"
+                className="input"
+                value={fields.author}
+                onChange={(e) =>
+                  setFields((f) => ({ ...f, author: e.target.value }))
+                }
+              />
+            </label>
             {state?.errors?.author && (
               <p className="text-sm text-red-500">{state.errors.author[0]}</p>
             )}
           </div>
 
           <div className="grid gap-2">
-            <label>URL</label>
-            <input
-              name="url"
-              className="input"
-              value={fields.url}
-              onChange={(e) =>
-                setFields((f) => ({ ...f, url: e.target.value }))
-              }
-            />
+            <label>
+              URL
+              <input
+                name="url"
+                className="input"
+                value={fields.url}
+                onChange={(e) =>
+                  setFields((f) => ({ ...f, url: e.target.value }))
+                }
+              />
+            </label>
             {state?.errors?.url && (
               <p className="text-sm text-red-500">{state.errors.url[0]}</p>
             )}
@@ -79,9 +92,10 @@ export default function NewBlog() {
 
         <button
           type="submit"
+          data-testid="create-blog-button"
           className="mt-6 rounded-full bg-black px-4 py-2 text-white"
         >
-          Submit
+          Create
         </button>
       </div>
     </form>

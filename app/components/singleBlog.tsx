@@ -12,12 +12,12 @@ export default function BlogPost({
   ...blog
 }: Props) {
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10">
+    <div data-testid="blog-detail" className="mx-auto w-full max-w-3xl px-6 py-10">
       <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h2 data-testid="blog-title" className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
           {blog.title}
         </h2>
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+        <p data-testid="blog-author" className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
           By {blog.author}
         </p>
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
@@ -38,6 +38,7 @@ export default function BlogPost({
           <input type="hidden" name="blogId" value={String(blog.id)} />
           <button
             type="submit"
+            data-testid="add-to-reading-list-button"
             className="inline-flex items-center justify-center rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-500"
           >
             Add to reading list

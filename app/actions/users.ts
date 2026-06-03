@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
 import { users } from "../../db/schema";
+import { getUserByUsername } from "../services/users";
 import { auth } from "@/auth";
 
 type RegisterErrors = {
@@ -67,6 +68,10 @@ export const registerUser = async (
   await db.insert(users).values({ username, name, passwordHash });
 
   redirect("/login");
+};
+
+export const getUserByUsernameAction = async (username: string) => {
+  return getUserByUsername(username);
 };
 
 export const generateTokenAction = async () => {

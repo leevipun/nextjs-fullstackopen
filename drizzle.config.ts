@@ -1,10 +1,18 @@
-import { defineConfig } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit"
+import * as dotenv from "dotenv"
+
+// Load .env.test in test environment, otherwise .env.local, fallback to .env
+const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env.local"
+dotenv.config({ path: envFile })
+if (!process.env.DATABASE_URL) {
+  dotenv.config({ path: ".env" })
+}
 
 export default defineConfig({
   schema: "./db/schema.ts",
-  out: "./db/migrations",
+  out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? "",
+    url: process.env.DATABASE_URL!,
   },
-});
+})
