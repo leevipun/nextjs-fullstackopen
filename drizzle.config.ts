@@ -1,12 +1,9 @@
 import { defineConfig } from "drizzle-kit"
 import * as dotenv from "dotenv"
 
-// Load .env.test in test environment, otherwise .env.local, fallback to .env
-const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env.local"
-dotenv.config({ path: envFile })
-if (!process.env.DATABASE_URL) {
-  dotenv.config({ path: ".env" })
-}
+dotenv.config({ path: ".env.test" })
+dotenv.config({ path: ".env.local" })
+dotenv.config({ path: ".env" })
 
 export default defineConfig({
   schema: "./db/schema.ts",
